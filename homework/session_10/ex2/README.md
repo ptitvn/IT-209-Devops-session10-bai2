@@ -25,20 +25,13 @@
 
 ## 3. Cấu Trúc Thư Mục Dự Án
 ```text
-bai2/
-├── .dockerignore                  # Loại trừ node_modules và các tệp không cần thiết
-├── Dockerfile                     # Single-stage Dockerfile cho ứng dụng
-├── package.json                   # Định nghĩa dependencies (express)
-├── server.js                      # Mã nguồn ứng dụng REST API Express
-├── README.md                      # Báo cáo và hướng dẫn thực thi
-└── homework/
-    └── session_10/
-        └── ex2/
-            ├── .dockerignore
-            ├── Dockerfile
-            ├── package.json
-            ├── server.js
-            └── README.md
+homework/
+└── session_10/
+    └── ex2/
+        ├── Dockerfile                     # Single-stage Dockerfile cho ứng dụng
+        ├── package.json                   # Định nghĩa dependencies (express)
+        ├── server.js                      # Mã nguồn ứng dụng REST API Express
+        └── README.md                      # Báo cáo và hướng dẫn thực thi
 ```
 
 ---
@@ -114,7 +107,7 @@ CMD ["node", "server.js"]
 | **`ENV`** | `ENV PORT=3000` | Khai báo biến môi trường trong runtime container, ứng dụng Express sẽ đọc giá trị này qua `process.env.PORT`. |
 | **`COPY`** | `COPY package*.json ./` | Sao chép riêng tệp phụ thuộc trước khi copy toàn bộ mã nguồn để tận dụng **Docker Layer Caching**. Nếu mã nguồn thay đổi nhưng `package.json` không đổi, bước `npm install` sẽ dùng cache giúp build cực nhanh. |
 | **`RUN`** | `RUN npm install` | Chạy lệnh cài đặt các gói phụ thuộc (Express) vào thư mục `/app/node_modules` bên trong container trong quá trình build image. |
-| **`COPY`** | `COPY . .` | Sao chép toàn bộ mã nguồn còn lại của ứng dụng vào image (loại trừ các file trong `.dockerignore`). |
+| **`COPY`** | `COPY . .` | Sao chép toàn bộ mã nguồn còn lại của ứng dụng vào image. |
 | **`EXPOSE`** | `EXPOSE 3000` | Tài liệu hóa cổng mạng mà ứng dụng lắng nghe bên trong container (metadata). |
 | **`CMD`** | `CMD ["node", "server.js"]` | Lệnh mặc định được thực thi khi container khởi động. Dùng **Exec form** (dạng mảng JSON) giúp tiến trình nhận trực tiếp tín hiệu `SIGTERM` / `SIGINT` từ Docker daemon để shutdown an toàn. |
 
@@ -122,8 +115,9 @@ CMD ["node", "server.js"]
 
 ## 5. Hướng Dẫn Thực Thi & Kiểm Thử
 
-### Bước 1: Build Docker Image
+### Bước 1: Di chuyển vào thư mục bài tập & Build Docker Image
 ```bash
+cd homework/session_10/ex2
 docker build -t hw-backend:v1 .
 ```
 
